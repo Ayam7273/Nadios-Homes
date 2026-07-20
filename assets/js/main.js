@@ -2,11 +2,15 @@
  * NADIOS Homes & Properties Limited — Main JavaScript
  */
 
+/* Preloader starts immediately so it can track window load */
+initPreloader();
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initMobileNav();
   initActiveNav();
   initScrollReveal();
+  initScrollProgress();
   initCookieConsent();
   initStatsCounter();
   initBlueprintDraw();
@@ -24,6 +28,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/* ============================================
+   Preloader — logo + circular progress ring
+   ============================================ */
+function initPreloader() {
+  const preloader = document.getElementById('preloader');
+  if (!preloader) {
+    document.body.classList.add('preloader-complete');
+    return;
+  }
+
+  const progressRing = preloader.querySelector('.preloader__ring-progress');
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+  const reduced = prefersReducedMotion();
+  const seen = sessionStorage.getItem('nadiosPreloaderSeen');
+  const minDisplayTime = reduced ? 200 : seen ? 300 : 900;
+  const start = performance.now();
+  let dismissed = false;
+  let interval = null;
+
+  document.body.classList.add('is-preloading');
+
+  if (progressRing) {
+    progressRing.style.strokeDasharray = `${circumference}`;
+    progressRing.style.strokeDashoffset = `${circumference}`;
+  }
+
+  function setProgress(percent) {
+    if (!progressRing) return;
+    const clamped = Math.max(0, Math.min(100, percent));
+    const offset = circumference - (clamped / 100) * circumference;
+    progressRing.style.strokeDashoffset = `${offset}`;
+  }
+
+  function finishPreloader() {
+    if (dismissed) return;
+    dismissed = true;
+    if (interval) clearInterval(interval);
+
+    setProgress(100);
+
+    const handoffDelay = reduced ? 0 : 200;
+    setTimeout(() => {
+      preloader.classList.add('preloader--done');
+      document.body.classList.remove('is-preloading');
+      document.body.classList.add('preloader-complete');
+      document.body.style.overflow = '';
+      sessionStorage.setItem('nadiosPreloaderSeen', '1');
+      document.dispatchEvent(new CustomEvent('nadios:preloader-done'));
+
+      const removeDelay = reduced ? 50 : 700;
+      setTimeout(() => {
+        if (preloader.parentNode) preloader.remove();
+      }, removeDelay);
+    }, handoffDelay);
+  }
+
+  function onLoadComplete() {
+    const elapsed = performance.now() - start;
+    const wait = Math.max(0, minDisplayTime - elapsed);
+    setTimeout(finishPreloader, wait);
+  }
+
+  if (reduced) {
+    setProgress(100);
+  } else {
+    let fakeProgress = 0;
+    interval = setInterval(() => {
+      // Ease toward 90% while waiting on real load
+      fakeProgress += (90 - fakeProgress) * 0.1;
+      setProgress(fakeProgress);
+    }, 60);
+  }
+
+  if (document.readyState === 'complete') {
+    onLoadComplete();
+  } else {
+    window.addEventListener('load', onLoadComplete, { once: true });
+  }
+
+  // Safety fallback if load never fires
+  setTimeout(() => {
+    if (!dismissed) onLoadComplete();
+  }, 8000);
 }
 
 /* ============================================
@@ -141,26 +231,40 @@ function initBlueprintDraw() {
   const heroBp = document.getElementById('heroBlueprint');
   const aboutBp = document.getElementById('aboutBlueprint');
 
-  if (prefersReducedMotion()) {
-    [heroBp, aboutBp].forEach((svg) => {
-      if (!svg) return;
-      svg.classList.add('drawn');
-      svg.querySelectorAll('.bp-line').forEach((line) => {
+  function drawHeroBlueprint() {
+    if (!heroBp) return;
+
+    if (prefersReducedMotion()) {
+      heroBp.classList.add('drawn');
+      heroBp.querySelectorAll('.bp-line').forEach((line) => {
         line.style.strokeDasharray = 'none';
         line.style.strokeDashoffset = '0';
       });
-    });
-    return;
-  }
+      return;
+    }
 
-  if (heroBp) {
-    // Draw on load as part of hero sequence
     requestAnimationFrame(() => {
       setTimeout(() => heroBp.classList.add('drawn'), 200);
     });
   }
 
+  // Wait for preloader handoff so blueprint syncs with hero entrance
+  if (document.getElementById('preloader') && !document.body.classList.contains('preloader-complete')) {
+    document.addEventListener('nadios:preloader-done', drawHeroBlueprint, { once: true });
+  } else {
+    drawHeroBlueprint();
+  }
+
   if (aboutBp) {
+    if (prefersReducedMotion()) {
+      aboutBp.classList.add('drawn');
+      aboutBp.querySelectorAll('.bp-line').forEach((line) => {
+        line.style.strokeDasharray = 'none';
+        line.style.strokeDashoffset = '0';
+      });
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -675,6 +779,31 @@ function validateForm(form) {
   });
 
   return valid;
+}
+
+/* ============================================
+   Scroll progress — slim top bar (fills L→R)
+   ============================================ */
+function initScrollProgress() {
+  let bar = document.getElementById('scroll-progress');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'scroll-progress';
+    bar.className = 'scroll-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.prepend(bar);
+  }
+
+  function updateProgress() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+    bar.style.width = percent + '%';
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress, { passive: true });
+  updateProgress();
 }
 
 /* ============================================

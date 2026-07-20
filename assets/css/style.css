@@ -42,6 +42,11 @@
   --section-pad: 120px;
   --section-pad-sm: 64px;
   --section-pad-lg: 160px;
+
+  /* Scrollbar — brand accent reads on light paper & dark ink sections */
+  --nadios-scroll-thumb: var(--nadios-green);
+  --nadios-scroll-thumb-hover: var(--nadios-green-dark);
+  --nadios-scroll-track: transparent;
 }
 
 *, *::before, *::after {
@@ -53,6 +58,48 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  /* Firefox — slim branded scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--nadios-scroll-thumb) var(--nadios-scroll-track);
+}
+
+/* WebKit: Chrome, Edge, Safari — slim branded scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--nadios-scroll-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--nadios-scroll-track);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--nadios-scroll-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Top scroll-progress indicator (fills L→R as page scrolls) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  max-width: 100%;
+  background: var(--nadios-brass);
+  z-index: 10000;
+  pointer-events: none;
+  transition: width 0.1s linear;
 }
 
 body {
@@ -778,17 +825,95 @@ p:last-child { margin-bottom: 0; }
   50% { transform: translateX(-50%) translateY(8px); }
 }
 
-/* Hero load sequence */
+/* Hero load sequence — waits for preloader handoff (.preloader-complete) */
 .hero-animate .hero-reveal {
   opacity: 0;
   transform: translateY(24px);
+}
+
+.preloader-complete .hero-animate .hero-reveal {
   animation: fadeUp 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.hero-animate .hero-reveal:nth-child(1) { animation-delay: 0.15s; }
-.hero-animate .hero-reveal:nth-child(2) { animation-delay: 0.35s; }
-.hero-animate .hero-reveal:nth-child(3) { animation-delay: 0.55s; }
-.hero-animate .hero-reveal:nth-child(4) { animation-delay: 0.75s; }
+.preloader-complete .hero-animate .hero-reveal:nth-child(1) { animation-delay: 0.15s; }
+.preloader-complete .hero-animate .hero-reveal:nth-child(2) { animation-delay: 0.35s; }
+.preloader-complete .hero-animate .hero-reveal:nth-child(3) { animation-delay: 0.55s; }
+.preloader-complete .hero-animate .hero-reveal:nth-child(4) { animation-delay: 0.75s; }
+
+/* ============================================
+   PRELOADER
+   ============================================ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--nadios-green-dark);
+  transition:
+    opacity 0.65s cubic-bezier(0.65, 0, 0.35, 1),
+    visibility 0.65s cubic-bezier(0.65, 0, 0.35, 1),
+    transform 0.65s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.preloader.preloader--done {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+.preloader__inner {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader__ring {
+  position: absolute;
+  inset: 0;
+  width: 120px;
+  height: 120px;
+  transform: rotate(-90deg);
+}
+
+.preloader__ring-track,
+.preloader__ring-progress {
+  fill: none;
+  stroke-width: 2;
+}
+
+.preloader__ring-track {
+  stroke: rgba(246, 243, 236, 0.14);
+}
+
+.preloader__ring-progress {
+  stroke: #ffffff;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.12s linear;
+}
+
+.preloader__logo {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: auto;
+  max-width: 52%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+body.is-preloading {
+  overflow: hidden;
+}
+
+body:has(#preloader:not(.preloader--done)) {
+  overflow: hidden;
+}
 
 /* Page heroes (inner) */
 .page-hero {
@@ -864,6 +989,7 @@ p:last-child { margin-bottom: 0; }
   color: var(--nadios-paper);
   letter-spacing: -0.02em;
   margin: 0 0 2rem;
+  padding-bottom: 2rem;
 }
 
 .about-strip-aside {
@@ -2627,9 +2753,15 @@ p:last-child { margin-bottom: 0; }
 
   .reveal,
   .reveal-stagger > *,
-  .hero-animate .hero-reveal {
+  .hero-animate .hero-reveal,
+  .preloader-complete .hero-animate .hero-reveal {
     opacity: 1;
     transform: none;
+    animation: none !important;
+  }
+
+  .preloader.preloader--done {
+    transition-duration: 0.01ms;
   }
 
   .hero-blueprint .bp-line,
