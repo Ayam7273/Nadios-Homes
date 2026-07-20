@@ -11,7 +11,7 @@
   <title>Home — Nadios Homes & Properties Limited</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="icon" href="assets/images/favicon.png" type="image/png">
 </head>
@@ -21,7 +21,7 @@
   <nav class="navbar nav-transparent" id="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
-        <img src="assets/images/logo.png" alt="Nadios Homes & Properties Limited">
+        <img src="assets/images/logo.png" alt="Nadios Homes & Properties Limited" width="160" height="40">
       </a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
@@ -35,7 +35,7 @@
         <a href="calculator.html" class="nav-calc-link">ROI Calculator</a>
         <a href="contact.html" class="btn btn-primary">Contact Us</a>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" type="button">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -43,7 +43,7 @@
 
   <!-- Mobile Nav -->
   <div class="mobile-nav" id="mobileNav">
-    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu" type="button">✕</button>
     <div class="mobile-nav-links">
       <a href="index.html">Home</a>
       <a href="about.html">About Us</a>
@@ -60,255 +60,316 @@
   </div>
 
   <main>
-    <!-- Section 1: Hero -->
+    <!-- Hero -->
     <section class="hero-home">
       <div class="hero-video-wrap">
-        <div class="video-placeholder">
-          <span>VIDEO: Drone footage of Nadios development — hero background</span>
+        <div class="video-placeholder" role="img" aria-label="Aerial drone footage placeholder of a Nadios residential development">
+          <span>VIDEO: Drone footage of Nadios development</span>
           <p>Upload: assets/video/hero-video.mp4</p>
         </div>
         <div class="hero-overlay"></div>
       </div>
-      <div class="hero-content hero-animate">
-        <p class="label-upper">Nadios Homes & Properties Limited</p>
-        <h1>Building Quality Homes.<br>Creating Lasting Value.</h1>
-        <p>For over 10 years, Nadios Homes & Properties Limited has been delivering exceptional residential developments across Nigeria — combining premium construction, modern design, and long-term investment value.</p>
-        <div class="hero-ctas">
-          <a href="projects.html" class="btn btn-primary">Explore Our Projects</a>
-          <a href="contact.html" class="btn btn-secondary">Contact Us</a>
+
+      <!-- Signature blueprint line drawing -->
+      <svg class="hero-blueprint" id="heroBlueprint" viewBox="0 0 400 480" fill="none" aria-hidden="true">
+        <!-- Outer site boundary -->
+        <rect class="bp-line" x="40" y="40" width="320" height="400" />
+        <!-- Main building mass -->
+        <rect class="bp-line" x="80" y="100" width="160" height="200" />
+        <!-- Wing / annex -->
+        <rect class="bp-line" x="240" y="160" width="80" height="140" />
+        <!-- Courtyard -->
+        <rect class="bp-line" x="100" y="130" width="60" height="50" />
+        <!-- Internal partitions -->
+        <line class="bp-line" x1="160" y1="100" x2="160" y2="300" />
+        <line class="bp-line" x1="80" y1="200" x2="240" y2="200" />
+        <!-- Drive / path -->
+        <line class="bp-line" x1="160" y1="300" x2="160" y2="380" />
+        <line class="bp-line" x1="120" y1="380" x2="200" y2="380" />
+      </svg>
+
+      <div class="hero-layout hero-animate">
+        <div class="hero-content">
+          <p class="eyebrow hero-reveal">Nadios Homes &amp; Properties Limited</p>
+          <h1 class="hero-reveal">Building <em class="em-brass">Quality Homes</em>.<br>Creating <em class="em-brass">Lasting Value</em>.</h1>
+          <p class="hero-lead hero-reveal">For over 10 years, Nadios Homes &amp; Properties Limited has been delivering exceptional residential developments across Nigeria — combining premium construction, modern design, and long-term investment value.</p>
+          <div class="hero-ctas hero-reveal">
+            <a href="projects.html" class="btn btn-primary">Explore Our Projects</a>
+            <a href="contact.html" class="btn btn-secondary">Contact Us</a>
+          </div>
         </div>
       </div>
-      <a href="#about-strip" class="hero-scroll" aria-label="Scroll down">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+
+      <a href="#hero-stats" class="hero-scroll" aria-label="Scroll to key figures">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
     </section>
 
-    <!-- Section 2: About Strip -->
+    <!-- About strip — editorial split -->
     <section class="about-strip" id="about-strip">
-      <div class="container about-strip-inner reveal">
-        <p>At Nadios Homes & Properties Limited, we believe every property should be built with integrity, precision, and attention to detail. Our team develops residential properties that meet modern living standards while remaining affordable and investment-worthy.</p>
-        <a href="about.html" class="text-link-white">More About Nadios →</a>
+      <div class="container about-strip-grid reveal">
+        <div>
+          <p class="about-pullquote">We believe every property should be built with integrity, precision, and attention to detail — homes that meet modern living standards while remaining investment-worthy.</p>
+          <a href="about.html" class="text-link-white arrow-link">More About Nadios <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="about-strip-aside">
+          <svg class="about-blueprint" id="aboutBlueprint" viewBox="0 0 240 200" fill="none" aria-hidden="true">
+            <rect class="bp-line" x="20" y="20" width="200" height="160" />
+            <rect class="bp-line" x="40" y="45" width="90" height="80" />
+            <line class="bp-line" x1="85" y1="45" x2="85" y2="125" />
+            <line class="bp-line" x1="40" y1="85" x2="130" y2="85" />
+          </svg>
+        </div>
       </div>
     </section>
 
-    <!-- Section 3: Core Services Grid -->
-    <section class="section">
+    <!-- What We Do — accordion -->
+    <section class="services-section">
       <div class="container">
         <div class="section-heading reveal">
+          <span class="eyebrow">Capabilities</span>
           <h2>What We Do</h2>
         </div>
-        <div class="service-tiles reveal-stagger">
-          <article class="service-tile">
-            <div class="service-tile-inner">
-              <div class="img-placeholder" style="aspect-ratio:1/1;"><span>IMAGE: Property Development — planning/design table</span></div>
-              <div class="service-tile-overlay"></div>
-              <div class="service-tile-content">
-                <p class="service-tile-label">Development</p>
-                <h3>Property Development</h3>
-              </div>
+        <div class="services-accordion reveal" id="servicesAccordion">
+          <article class="service-acc-item open">
+            <button class="service-acc-trigger" type="button" aria-expanded="true">
+              <span class="service-acc-num">01</span>
+              <span class="service-acc-title">Property Development</span>
+              <span class="service-acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="service-acc-panel">
+              <p class="service-acc-body">End-to-end residential development — from land acquisition and planning through design, construction, and delivery of finished homes across Lagos.</p>
             </div>
           </article>
-          <article class="service-tile">
-            <div class="service-tile-inner">
-              <div class="img-placeholder" style="aspect-ratio:1/1;"><span>IMAGE: Construction Services — construction site</span></div>
-              <div class="service-tile-overlay"></div>
-              <div class="service-tile-content">
-                <p class="service-tile-label">Construction</p>
-                <h3>Construction Services</h3>
-              </div>
+          <article class="service-acc-item">
+            <button class="service-acc-trigger" type="button" aria-expanded="false">
+              <span class="service-acc-num">02</span>
+              <span class="service-acc-title">Construction Services</span>
+              <span class="service-acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="service-acc-panel">
+              <p class="service-acc-body">Professional construction with premium materials, skilled craftsmanship, and rigorous quality control — built for durability and lasting value.</p>
             </div>
           </article>
-          <article class="service-tile">
-            <div class="service-tile-inner">
-              <div class="img-placeholder" style="aspect-ratio:1/1;"><span>IMAGE: Property Management — manager at building</span></div>
-              <div class="service-tile-overlay"></div>
-              <div class="service-tile-content">
-                <p class="service-tile-label">Management</p>
-                <h3>Property Management</h3>
-              </div>
+          <article class="service-acc-item">
+            <button class="service-acc-trigger" type="button" aria-expanded="false">
+              <span class="service-acc-num">03</span>
+              <span class="service-acc-title">Property Management</span>
+              <span class="service-acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="service-acc-panel">
+              <p class="service-acc-body">Ongoing maintenance and management services that preserve property value, improve occupancy, and protect your investment over time.</p>
             </div>
           </article>
-          <article class="service-tile">
-            <div class="service-tile-inner">
-              <div class="img-placeholder" style="aspect-ratio:1/1;"><span>IMAGE: Investment Advisory — meeting with investors</span></div>
-              <div class="service-tile-overlay"></div>
-              <div class="service-tile-content">
-                <p class="service-tile-label">Advisory</p>
-                <h3>Investment Advisory</h3>
-              </div>
+          <article class="service-acc-item">
+            <button class="service-acc-trigger" type="button" aria-expanded="false">
+              <span class="service-acc-num">04</span>
+              <span class="service-acc-title">Investment Advisory</span>
+              <span class="service-acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="service-acc-panel">
+              <p class="service-acc-body">Clear guidance for investors seeking residential opportunities in Nigeria’s growing real estate market — from entry to projected returns.</p>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Section 4: Featured Projects -->
-    <section class="section section-alt">
+    <!-- Featured Developments — asymmetric masonry -->
+    <section class="projects-section">
       <div class="container">
         <div class="section-heading reveal">
+          <span class="eyebrow">Portfolio</span>
           <h2>Featured Developments</h2>
         </div>
-        <div class="project-grid reveal">
-          <div class="project-row project-row-full">
-            <a href="project-detail.html" class="project-tile-link">
-              <article class="project-tile">
-                <div class="img-placeholder" style="aspect-ratio:21/9; min-height:400px;"><span>IMAGE: Hero project exterior — Featured Development</span></div>
-                <div class="project-tile-overlay"></div>
-                <div class="project-tile-content">
-                  <h3>Coming Soon — Featured Development</h3>
-                  <p class="project-location">Lagos, Nigeria</p>
+        <div class="project-masonry reveal">
+          <a href="project-detail.html" class="project-card">
+            <div class="project-card-media">
+              <div class="project-card-placeholder" role="img" aria-label="Featured development exterior placeholder, Lagos Nigeria" style="width:100%;height:100%;min-height:520px;">
+                <span class="project-loc-tag">Lagos</span>
+                <div class="project-card-content">
+                  <h3>Featured Development</h3>
+                  <p class="project-location">Coming Soon · Lagos, Nigeria</p>
                 </div>
-              </article>
-            </a>
-          </div>
-          <div class="project-row project-row-half">
-            <a href="project-detail.html" class="project-tile-link">
-              <article class="project-tile">
-                <div class="img-placeholder" style="aspect-ratio:16/9; min-height:350px;"><span>IMAGE: Residential Estate exterior</span></div>
-                <div class="project-tile-overlay"></div>
-                <div class="project-tile-content">
+              </div>
+            </div>
+          </a>
+          <a href="project-detail.html" class="project-card">
+            <div class="project-card-media">
+              <div class="project-card-placeholder" role="img" aria-label="Residential estate exterior placeholder" style="width:100%;height:100%;min-height:250px;">
+                <span class="project-loc-tag">Lagos</span>
+                <div class="project-card-content">
                   <h3>Residential Estate</h3>
                   <p class="project-location">Lagos, Nigeria</p>
                 </div>
-              </article>
-            </a>
-            <a href="project-detail.html" class="project-tile-link">
-              <article class="project-tile">
-                <div class="img-placeholder" style="aspect-ratio:16/9; min-height:350px;"><span>IMAGE: Luxury Homes exterior</span></div>
-                <div class="project-tile-overlay"></div>
-                <div class="project-tile-content">
+              </div>
+            </div>
+          </a>
+          <a href="project-detail.html" class="project-card">
+            <div class="project-card-media">
+              <div class="project-card-placeholder" role="img" aria-label="Luxury homes exterior placeholder" style="width:100%;height:100%;min-height:250px;">
+                <span class="project-loc-tag">Lagos</span>
+                <div class="project-card-content">
                   <h3>Luxury Homes</h3>
                   <p class="project-location">Lagos, Nigeria</p>
                 </div>
-              </article>
-            </a>
-          </div>
-          <div class="project-row project-row-full">
-            <a href="project-detail.html" class="project-tile-link">
-              <article class="project-tile">
-                <div class="img-placeholder" style="aspect-ratio:21/9; min-height:400px;"><span>IMAGE: Nadios Court Phase 1 exterior</span></div>
-                <div class="project-tile-overlay"></div>
-                <div class="project-tile-content">
+              </div>
+            </div>
+          </a>
+          <a href="project-detail.html" class="project-card">
+            <div class="project-card-media">
+              <div class="project-card-placeholder" role="img" aria-label="Nadios Court Phase 1 exterior, Itire Lagos" style="width:100%;height:100%;min-height:340px;">
+                <span class="project-loc-tag">Itire</span>
+                <div class="project-card-content">
                   <h3>Nadios Court Phase 1</h3>
                   <p class="project-location">Itire, Lagos</p>
                 </div>
-              </article>
-            </a>
-          </div>
+              </div>
+            </div>
+          </a>
         </div>
-        <div style="text-align:center; margin-top:3rem;" class="reveal">
-          <a href="projects.html" class="text-link">Explore All Projects →</a>
+        <div style="margin-top:3rem;" class="reveal">
+          <a href="projects.html" class="arrow-link">Explore All Projects <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
 
-    <!-- Section 5: Stats Bar -->
+    <!-- Stats band -->
     <section class="stats-bar">
       <div class="container">
         <div class="stats-grid reveal-stagger">
           <div class="stat-item">
-            <h3 data-count="10" data-suffix="+">0+</h3>
+            <h3 class="stat-num" data-count="10" data-suffix="+">0+</h3>
             <p>Years Experience</p>
           </div>
           <div class="stat-item">
-            <h3 data-count="50" data-suffix="+">0+</h3>
+            <h3 class="stat-num" data-count="50" data-suffix="+">0+</h3>
             <p>Homes Delivered</p>
           </div>
           <div class="stat-item">
-            <h3>₦B+</h3>
+            <h3 class="stat-num">₦2B+</h3>
             <p>in Development Value</p>
           </div>
           <div class="stat-item">
-            <h3>100%</h3>
+            <h3 class="stat-num">100%</h3>
             <p>Client Commitment</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Section 6: Why Choose Us -->
-    <section class="section section-alt">
+    <!-- Why Choose Nadios — numbered list -->
+    <section class="why-section">
       <div class="container">
         <div class="section-heading reveal">
+          <span class="eyebrow">Differentiators</span>
           <h2>Why Choose Nadios</h2>
         </div>
-        <div class="why-grid reveal-stagger">
-          <article class="why-card">
-            <div class="why-card-icon"><i data-lucide="award"></i></div>
-            <h3>10+ Years Experience</h3>
-            <p>Over a decade of delivering quality residential developments across Lagos and beyond.</p>
+        <div class="why-list reveal">
+          <article class="why-item">
+            <span class="why-num">01</span>
+            <div>
+              <h3>10+ Years Experience</h3>
+              <p>Over a decade of delivering quality residential developments across Lagos and beyond.</p>
+            </div>
           </article>
-          <article class="why-card">
-            <div class="why-card-icon"><i data-lucide="hard-hat"></i></div>
-            <h3>Quality Construction</h3>
-            <p>Premium materials, skilled craftsmanship, and rigorous quality control on every project.</p>
+          <article class="why-item">
+            <span class="why-num">02</span>
+            <div>
+              <h3>Quality Construction</h3>
+              <p>Premium materials, skilled craftsmanship, and rigorous quality control on every project.</p>
+            </div>
           </article>
-          <article class="why-card">
-            <div class="why-card-icon"><i data-lucide="clipboard-list"></i></div>
-            <h3>Professional PM</h3>
-            <p>Strategic project management ensuring timelines, budgets, and standards are met.</p>
+          <article class="why-item">
+            <span class="why-num">03</span>
+            <div>
+              <h3>Professional Project Management</h3>
+              <p>Strategic project management ensuring timelines, budgets, and standards are met.</p>
+            </div>
           </article>
-          <article class="why-card">
-            <div class="why-card-icon"><i data-lucide="heart-handshake"></i></div>
-            <h3>Customer-Focused</h3>
-            <p>Transparent communication and dedicated support from consultation to handover.</p>
+          <article class="why-item">
+            <span class="why-num">04</span>
+            <div>
+              <h3>Customer-Focused Approach</h3>
+              <p>Transparent communication and dedicated support from consultation to handover.</p>
+            </div>
           </article>
-          <article class="why-card">
-            <div class="why-card-icon"><i data-lucide="clock"></i></div>
-            <h3>Reliable Delivery</h3>
-            <p>Consistent on-time delivery with clear milestones and accountable project teams.</p>
+          <article class="why-item">
+            <span class="why-num">05</span>
+            <div>
+              <h3>Reliable Delivery</h3>
+              <p>Consistent on-time delivery with clear milestones and accountable project teams.</p>
+            </div>
           </article>
-          <article class="why-card">
-            <div class="why-card-icon"><i data-lucide="trending-up"></i></div>
-            <h3>Long-Term Value</h3>
-            <p>Properties designed for lasting appreciation and strong rental yield potential.</p>
+          <article class="why-item">
+            <span class="why-num">06</span>
+            <div>
+              <h3>Long-Term Value</h3>
+              <p>Properties designed for lasting appreciation and strong rental yield potential.</p>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Section 7: Testimonials -->
-    <section class="section">
+    <!-- Testimonials — editorial single quote -->
+    <section class="testimonials-section">
       <div class="container">
         <div class="section-heading reveal">
+          <span class="eyebrow">Clients</span>
           <h2>What Our Clients Say</h2>
         </div>
-        <div class="testimonials-slider reveal">
-          <div class="testimonials-track">
-            <div class="testimonial-card">
-              <div class="testimonial-quote">&ldquo;</div>
-              <p class="testimonial-text">Nadios delivered our home on time with exceptional quality. Their team was professional, transparent, and responsive throughout the entire process.</p>
-              <p class="testimonial-author">Adebayo Okonkwo</p>
-              <p class="testimonial-property">Nadios Court Phase 1</p>
-            </div>
-            <div class="testimonial-card">
-              <div class="testimonial-quote">&ldquo;</div>
-              <p class="testimonial-text">Investing with Nadios was one of the best decisions we made. The construction quality and projected returns exceeded our expectations.</p>
-              <p class="testimonial-author">Chioma Eze</p>
-              <p class="testimonial-property">Greenfield Estate</p>
-            </div>
-            <div class="testimonial-card">
-              <div class="testimonial-quote">&ldquo;</div>
-              <p class="testimonial-text">From initial consultation to final handover, the experience was seamless. I would highly recommend Nadios to anyone seeking quality homes in Lagos.</p>
-              <p class="testimonial-author">Tunde Adeyemi</p>
-              <p class="testimonial-property">Palm Gardens Residence</p>
+        <div class="testimonials-editorial reveal" id="testimonialsEditorial">
+          <div class="testimonial-slide active" data-index="0">
+            <div class="testimonial-mark" aria-hidden="true">“</div>
+            <p class="testimonial-quote-text">Nadios delivered our home on time with exceptional quality. Their team was professional, transparent, and responsive throughout the entire process.</p>
+            <div class="testimonial-meta">
+              <span class="author">Adebayo Okonkwo</span>
+              <span>Nadios Court Phase 1</span>
             </div>
           </div>
-          <div class="testimonial-dots">
-            <button class="testimonial-dot active" aria-label="Testimonial 1"></button>
-            <button class="testimonial-dot" aria-label="Testimonial 2"></button>
-            <button class="testimonial-dot" aria-label="Testimonial 3"></button>
+          <div class="testimonial-slide" data-index="1">
+            <div class="testimonial-mark" aria-hidden="true">“</div>
+            <p class="testimonial-quote-text">Investing with Nadios was one of the best decisions we made. The construction quality and projected returns exceeded our expectations.</p>
+            <div class="testimonial-meta">
+              <span class="author">Chioma Eze</span>
+              <span>Greenfield Estate</span>
+            </div>
+          </div>
+          <div class="testimonial-slide" data-index="2">
+            <div class="testimonial-mark" aria-hidden="true">“</div>
+            <p class="testimonial-quote-text">From initial consultation to final handover, the experience was seamless. I would highly recommend Nadios to anyone seeking quality homes in Lagos.</p>
+            <div class="testimonial-meta">
+              <span class="author">Tunde Adeyemi</span>
+              <span>Palm Gardens Residence</span>
+            </div>
+          </div>
+          <div class="testimonials-nav">
+            <div class="testimonial-dots" role="tablist" aria-label="Testimonial navigation">
+              <button class="testimonial-dot active" type="button" role="tab" aria-label="Testimonial 1" aria-selected="true"></button>
+              <button class="testimonial-dot" type="button" role="tab" aria-label="Testimonial 2" aria-selected="false"></button>
+              <button class="testimonial-dot" type="button" role="tab" aria-label="Testimonial 3" aria-selected="false"></button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Section 8: CTA Banner -->
+    <!-- Final CTA -->
     <section class="cta-banner">
+      <div class="cta-banner-blueprint" aria-hidden="true">
+        <svg viewBox="0 0 400 280" fill="none">
+          <rect class="bp-line" x="40" y="40" width="320" height="200" />
+          <rect class="bp-line" x="80" y="80" width="140" height="120" />
+          <line class="bp-line" x1="150" y1="80" x2="150" y2="200" />
+          <line class="bp-line" x1="80" y1="140" x2="220" y2="140" />
+          <rect class="bp-line" x="240" y="100" width="80" height="100" />
+        </svg>
+      </div>
       <div class="container reveal">
         <h2>Ready to Find Your Dream Home?</h2>
         <p>Speak with our team today about available properties and investment opportunities.</p>
-        <a href="contact.html" class="btn btn-white">Get In Touch</a>
+        <a href="contact.html" class="btn btn-primary">Get In Touch</a>
       </div>
     </section>
   </main>
@@ -321,9 +382,8 @@
         <p>Building quality residential homes across Lagos, Nigeria. Premium construction, modern design, and lasting investment value since 2015.</p>
         <div class="footer-social">
           <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="#fff" stroke="none"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg></a>
-          <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
         </div>
       </div>
       <div class="footer-col">
@@ -354,11 +414,12 @@
           <li><a href="mailto:info@nadioshomes.com">info@nadioshomes.com</a></li>
           <li><a href="tel:+2348000000000">+234 800 000 0000</a></li>
         </ul>
-        <a href="https://wa.me/234XXXXXXXXXX" class="btn btn-white" style="margin-top:1rem; font-size:0.875rem; padding:0.625rem 1rem;">Chat on WhatsApp</a>
+        <!-- Replace 234XXXXXXXXXX with the live WhatsApp number before launch -->
+        <a href="https://wa.me/234XXXXXXXXXX" class="btn btn-ghost-brass" style="margin-top:1rem; font-size:0.6875rem; padding:0.7rem 1rem;">Chat on WhatsApp</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Nadios Homes & Properties Limited. All Rights Reserved.</p>
+      <p>&copy; 2026 Nadios Homes &amp; Properties Limited. All Rights Reserved.</p>
       <div class="footer-legal">
         <a href="privacy.html">Privacy Policy</a>
         <a href="faqs.html">FAQs</a>
@@ -366,21 +427,14 @@
     </div>
   </footer>
 
-  <!-- WhatsApp Button -->
+  <!-- WhatsApp — replace number before launch -->
   <a href="https://wa.me/234XXXXXXXXXX" class="whatsapp-btn" aria-label="Chat on WhatsApp" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
-
-  <!-- Back to Top -->
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-  </button>
-
-  <!-- Cookie Banner -->
-  <div class="cookie-banner" id="cookieBanner">
+<div class="cookie-banner" id="cookieBanner">
     <p>We use cookies to improve your experience on our website. By continuing to browse, you agree to our use of cookies. <a href="privacy.html">Learn more</a></p>
     <div class="cookie-actions">
-      <button class="cookie-accept" id="cookieAccept">Accept</button>
+      <button class="cookie-accept" id="cookieAccept" type="button">Accept</button>
     </div>
   </div>
 

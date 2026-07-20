@@ -7,9 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
   initActiveNav();
   initScrollReveal();
-  initBackToTop();
   initCookieConsent();
   initStatsCounter();
+  initBlueprintDraw();
+  initServicesAccordion();
   initTestimonials();
   initFAQAccordion();
   initGalleryFilter();
@@ -21,6 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initLucideIcons();
 });
 
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 /* ============================================
    Navbar scroll behaviour
    ============================================ */
@@ -29,7 +34,7 @@ function initNavbar() {
   if (!navbar) return;
 
   const isHome = document.body.classList.contains('home-page');
-  const scrollThreshold = 80;
+  const scrollThreshold = 60;
 
   function updateNavbar() {
     if (!isHome) return;
@@ -64,18 +69,27 @@ function initMobileNav() {
   function openNav() {
     mobileNav.classList.add('open');
     document.body.style.overflow = 'hidden';
+    hamburger.setAttribute('aria-expanded', 'true');
   }
 
   function closeNav() {
     mobileNav.classList.remove('open');
     document.body.style.overflow = '';
+    hamburger.setAttribute('aria-expanded', 'false');
   }
 
+  hamburger.setAttribute('aria-expanded', 'false');
   hamburger.addEventListener('click', openNav);
   closeBtn?.addEventListener('click', closeNav);
 
   mobileNav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', closeNav);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+      closeNav();
+    }
   });
 }
 
@@ -100,6 +114,11 @@ function initScrollReveal() {
   const reveals = document.querySelectorAll('.reveal, .reveal-stagger');
   if (!reveals.length) return;
 
+  if (prefersReducedMotion()) {
+    reveals.forEach((el) => el.classList.add('visible'));
+    return;
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -109,29 +128,80 @@ function initScrollReveal() {
         }
       });
     },
-    { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
   );
 
   reveals.forEach((el) => observer.observe(el));
 }
 
 /* ============================================
-   Back-to-top button
+   Blueprint SVG stroke draw-in
    ============================================ */
-function initBackToTop() {
-  const btn = document.getElementById('backToTop');
-  if (!btn) return;
+function initBlueprintDraw() {
+  const heroBp = document.getElementById('heroBlueprint');
+  const aboutBp = document.getElementById('aboutBlueprint');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      btn.classList.add('visible');
-    } else {
-      btn.classList.remove('visible');
-    }
-  }, { passive: true });
+  if (prefersReducedMotion()) {
+    [heroBp, aboutBp].forEach((svg) => {
+      if (!svg) return;
+      svg.classList.add('drawn');
+      svg.querySelectorAll('.bp-line').forEach((line) => {
+        line.style.strokeDasharray = 'none';
+        line.style.strokeDashoffset = '0';
+      });
+    });
+    return;
+  }
 
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (heroBp) {
+    // Draw on load as part of hero sequence
+    requestAnimationFrame(() => {
+      setTimeout(() => heroBp.classList.add('drawn'), 200);
+    });
+  }
+
+  if (aboutBp) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            aboutBp.classList.add('drawn');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(aboutBp);
+  }
+}
+
+/* ============================================
+   Services accordion
+   ============================================ */
+function initServicesAccordion() {
+  const root = document.getElementById('servicesAccordion');
+  if (!root) return;
+
+  const items = root.querySelectorAll('.service-acc-item');
+
+  items.forEach((item) => {
+    const trigger = item.querySelector('.service-acc-trigger');
+    if (!trigger) return;
+
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+
+      items.forEach((i) => {
+        i.classList.remove('open');
+        i.querySelector('.service-acc-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
   });
 }
 
@@ -160,6 +230,16 @@ function initStatsCounter() {
   const stats = document.querySelectorAll('[data-count]');
   if (!stats.length) return;
 
+  if (prefersReducedMotion()) {
+    stats.forEach((el) => {
+      const target = el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      el.textContent = prefix + target + suffix;
+    });
+    return;
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -169,7 +249,7 @@ function initStatsCounter() {
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.4 }
   );
 
   stats.forEach((stat) => observer.observe(stat));
@@ -187,7 +267,7 @@ function animateCounter(el) {
   }
 
   const end = parseInt(target, 10);
-  const duration = 2000;
+  const duration = 1800;
   const startTime = performance.now();
 
   function update(currentTime) {
@@ -208,9 +288,17 @@ function animateCounter(el) {
 }
 
 /* ============================================
-   Testimonials carousel
+   Testimonials — editorial single-slide
    ============================================ */
 function initTestimonials() {
+  // New editorial component
+  const editorial = document.getElementById('testimonialsEditorial');
+  if (editorial) {
+    initEditorialTestimonials(editorial);
+    return;
+  }
+
+  // Legacy track carousel (if any page still uses it)
   const track = document.querySelector('.testimonials-track');
   const dots = document.querySelectorAll('.testimonial-dot');
   if (!track || !dots.length) return;
@@ -228,9 +316,72 @@ function initTestimonials() {
     dot.addEventListener('click', () => goTo(i));
   });
 
-  setInterval(() => {
-    goTo((current + 1) % total);
-  }, 6000);
+  if (!prefersReducedMotion()) {
+    setInterval(() => {
+      goTo((current + 1) % total);
+    }, 6000);
+  }
+}
+
+function initEditorialTestimonials(root) {
+  const slides = root.querySelectorAll('.testimonial-slide');
+  const dots = root.querySelectorAll('.testimonial-dot');
+  if (!slides.length) return;
+
+  let current = 0;
+  let timer = null;
+  const total = slides.length;
+
+  function goTo(index) {
+    current = (index + total) % total;
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === current);
+    });
+    dots.forEach((dot, i) => {
+      const active = i === current;
+      dot.classList.toggle('active', active);
+      dot.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  function startAuto() {
+    if (prefersReducedMotion() || total < 2) return;
+    stopAuto();
+    timer = setInterval(() => goTo(current + 1), 6500);
+  }
+
+  function stopAuto() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      goTo(i);
+      startAuto();
+    });
+  });
+
+  // Touch swipe support
+  let touchStartX = 0;
+  root.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  root.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) < 40) return;
+    goTo(current + (dx < 0 ? 1 : -1));
+    startAuto();
+  }, { passive: true });
+
+  root.addEventListener('mouseenter', stopAuto);
+  root.addEventListener('mouseleave', startAuto);
+
+  goTo(0);
+  startAuto();
 }
 
 /* ============================================
